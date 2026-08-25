@@ -28,6 +28,10 @@ options(
 
 Noe nytt fjernet fra slutten.
 
+## Bare lit ny tekst
+
+Her er ny tekst lagt til.
+
 ##### Running Code
 
 When you click the **Render** button a document will be generated that includes both content and the output of embedded code.
