@@ -1,0 +1,645 @@
+---
+title: "Mitt første dokument"
+author: "Arnstein"
+papersize: a4
+editor_options:
+  chunk_output_type: console
+format: 
+  html: 
+    paged:
+      print: false
+  typst: default
+  docx: default
+editor: visual
+---
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(huxtable)
+options(
+  paged.print = FALSE,
+  pillar.print_max = 25, 
+  pillar.print_min = 25
+  )
+```
+
+## Quarto
+
+Min egen tekst.
+
+##### Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code.
+You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+1.  første
+2.  andre
+    c.  punkt
+    d.  fffhghg
+3.  tredje
+
+```{r}
+plot(cars)
+```
+
+```{r}
+w <- c(2L, 3, "3")
+w
+```
+
+```{r}
+w <- c(2L, 3L, 3)
+w
+```
+
+```{r}
+typeof(w)
+```
+
+```{r}
+z <- c(3, 5, 1, 9)
+```
+
+```{r}
+z[-1]
+```
+
+```{r}
+z[-3]
+```
+
+```{r}
+z[c(-1, -3)]
+```
+
+```{r}
+#| eval: false
+z[-1, -3]
+```
+
+```{r}
+z[-c(3:2)]
+```
+
+```{r}
+z[-c(1, 3)]
+```
+
+```{r}
+x <- 4:31
+```
+
+```{r}
+head(x)
+```
+
+```{r}
+head(x, n = 3)
+```
+
+```{r}
+head(x, 3)
+```
+
+```{r}
+#| eval: false
+head(3, x)
+```
+
+```{r}
+head(n = 3, x = x)
+```
+
+```{r}
+head(n = 3, x = mtcars)
+```
+
+```{r}
+tail(n = 3, x = mtcars)
+```
+
+```{r}
+z <- c(3, 5, 1, 9)
+```
+
+```{r}
+tail(z, n = 2)
+```
+
+```{r}
+tail(z, n = -2)
+```
+
+```{r}
+z <- c(z, 7); z
+```
+
+```{r}
+tail(z, n = 2)
+```
+
+### Bruk av tail
+
+```{r}
+tail(z, n = -2)
+```
+
+```{r}
+x <- rnorm(10)
+q <- x < 0
+```
+
+```{r}
+typeof(q)
+```
+
+```{r}
+q
+```
+
+```{r}
+q + 5
+```
+
+```{r}
+l <- list(x = 1:3, y = c("A", letters[4:13]), z = seq(from = 1.3, to = 2.7, by = 0.2))
+```
+
+```{r}
+ll <- l
+```
+
+```{r}
+rm(ll)
+```
+
+```{r}
+#| paged.print: false
+mtcars
+```
+
+```{r}
+typeof(mtcars)
+```
+
+```{r}
+mtcars$mpg
+```
+
+```{r}
+typeof(mtcars$mpg)
+```
+
+### Hirarki
+
+1.  logical
+2.  integer
+3.  numeric
+4.  character
+
+```{r}
+x <- c(TRUE, FALSE, FALSE)
+```
+
+```{r}
+x
+```
+
+```{r}
+typeof(x)
+```
+
+```{r}
+x <- c(x, 1L)
+```
+
+```{r}
+x
+```
+
+```{r}
+typeof(x)
+```
+
+```{r}
+x[5] <- 2.1
+```
+
+```{r}
+x
+```
+
+```{r}
+typeof(x)
+```
+
+```{r}
+x[6] <- "a"
+```
+
+```{r}
+x
+```
+
+```{r}
+df <- data.frame(x = 1:3, y = letters[1:3], z = LETTERS[1:3])
+```
+
+```{r}
+#| eval: false
+#| paged.print: false
+df[2, c(1, "z")]
+```
+
+```{r}
+which(row.names(mtcars) == "Toyota Corolla")
+```
+
+```{r}
+?which
+```
+
+```{r}
+#| paged.print: false
+head(mtcars)
+```
+
+```{r}
+names(mtcars)
+```
+
+```{r}
+row.names(mtcars)
+```
+
+```{r}
+row.names(mtcars) == "Toyota Corolla"
+```
+
+```{r}
+which(row.names(mtcars) == "Toyota Corolla")
+```
+
+```{r}
+#| paged.print: false
+mtcars[which(row.names(mtcars) == "Toyota Corolla"),]
+```
+
+```{r}
+#| paged.print: false
+mtcars
+```
+
+```{r}
+#| paged.print: false
+mtcars[which(row.names(mtcars) == "Lotus Europa"),]
+```
+
+```{r}
+#| paged.print: false
+mtcars[which(row.names(mtcars) == "Lotus Europa"), 10]
+```
+
+```{r}
+#| paged.print: false
+mtcars[which(row.names(mtcars) == "Lotus Europa"), "gear"]
+```
+
+```{r}
+modell <- c("Porsche 914-2", "Lotus Europa", "Maserati Bora")
+```
+
+```{r}
+modell
+```
+
+```{r}
+row.names(mtcars) %in% modell
+```
+
+```{r}
+which(row.names(mtcars) %in% modell)
+```
+
+```{r}
+#| paged.print: false
+mtcars[which(row.names(mtcars) %in% modell), ]
+```
+
+```{r}
+#| paged.print: false
+mtcars[which(row.names(mtcars) %in% modell), c("mpg", "hp", "gear")]  
+```
+
+```{r}
+df <- data.frame(x = 1:3, y = letters[1:3], z = LETTERS[1:3])
+```
+
+```{r}
+#| paged.print: false
+#| echo: true
+#| eval: false
+df
+```
+
+```{r}
+df$q <- c(2.1, 0.4, 0.9)
+```
+
+## Overskrift
+
+```{r}
+df
+```
+
+A friend once said:
+
+> It's always better to give than to receive.
+
+```{r}
+tib <- as_tibble(df)
+```
+
+```{r}
+#| paged.print: false
+tib
+```
+
+```{r}
+#| paged.print: false
+df
+```
+
+```{r}
+is.data.frame(tib)
+```
+
+```{r}
+is.list(tib)
+```
+
+```{r}
+is.vector(df[2,3])
+```
+
+```{r}
+is.data.frame(df[2,3])
+```
+
+```{r}
+is.vector(tib[2,3])
+```
+
+```{r}
+is.data.frame(tib[2,3])
+```
+
+```{r}
+w <- tib[2,3]
+```
+
+```{r}
+#| paged.print: false
+w
+```
+
+```{r}
+df[2,3]
+```
+
+```{r}
+# define a matirc in R
+X <- matrix(c(2, 2, -1, 5, 2, 6), nrow = 3, byrow = FALSE)
+```
+
+```{r}
+Y <- matrix(c(-3, 2, 2.5, 6, -4, 4), nrow = 2, byrow = FALSE)
+```
+
+```{r}
+X %*% Y
+```
+
+```{r}
+Y %*% X
+```
+
+```{r}
+Y
+```
+
+```{r}
+X
+```
+
+```{r}
+#| paged.print: false
+subset(cars, subset = cars$speed > 6 & cars$speed < 11)
+```
+
+```{r}
+cars_sub <- subset(cars, subset = cars$speed > 6 & cars$speed < 11); cars_sub
+```
+
+```{r}
+#| paged.print: false
+cars_sub1 <- subset(cars, subset = cars$speed > 6 & cars$speed < 11 & cars$dist > 15)
+```
+
+```{r}
+lm1 <- lm(
+  formula = dist ~ speed, 
+  data = cars
+  )
+```
+
+```{r}
+summary(lm1)
+```
+
+```{r}
+lm2 <- lm(
+  formula = dist ~ speed, 
+  data = cars,
+  subset = cars$speed > 6 & cars$speed < 11 & cars$dist > 15
+  )
+```
+
+```{r}
+summary(lm2)
+```
+
+```{r}
+lm3 <- lm(
+  formula = dist ~ speed, 
+  data = cars_sub1
+  )
+```
+
+```{r}
+summary(lm3)
+```
+
+## Ta vare på ting
+
+- `save()`
+- `load()`
+
+```{r}
+getwd()
+```
+
+```{r}
+save(cars_sub1, lm1, lm2, file = "my-stuff.RData")
+```
+
+```{r}
+ls()
+```
+
+```{r}
+rm(cars_sub1, lm1, lm2)
+```
+
+```{r}
+ls()
+```
+
+```{r}
+# Merk at navnene er på plass
+load(file = "my-stuff.RData")
+```
+
+```{r}
+ls()
+```
+
+```{r}
+huxreg(
+        lm1, lm2, lm3,
+        error_format = "({statistic})", 
+        note         = "{stars}. T statistics in parentheses."
+      )
+```
+
+```{r}
+add_numbers <- function(x, y) {
+  x + y
+}
+```
+
+```{r}
+add_numbers(3, 4)
+```
+
+```{r}
+add_numbers <- function(x, y) {
+  res = x + y
+  res
+}
+```
+
+```{r}
+add_numbers(3, 4)
+```
+
+```{r}
+add_numbers <- function(x = 0, y = 0) {
+  res = x + y
+  res
+}
+```
+
+```{r}
+add_numbers()
+```
+
+```{r}
+add_numbers(5)
+```
+
+```{r}
+df
+```
+
+```{r}
+start_stupid_fun <- function(x1 = 0, n = 10, d = 1) {
+# initialise x
+x = vector(mode = "numeric", length = n)
+x[1] = x1
+
+for (i in seq_along(x[-1])) {
+  x[i + 1] = x[i] + d
+}
+print(x)
+}
+```
+
+```{r}
+start_stupid_fun()
+```
+
+```{r}
+start_stupid_fun(x1 = 17, n = 6)
+```
+
+```{r}
+start_stupid_fun(x1 = 17, n = 6, d = 2)
+```
+
+```{r}
+start_stupid_fun(x1 = 17, n = 6, d = 0.5)
+```
+
+```{r}
+head_and_tail <- function(x) {
+  c(head(x), tail(x))
+}
+```
+
+```{r}
+head_and_tail(x = mtcars)
+```
+
+```{r}
+mtcars
+```
+
+```{r}
+head_and_tail <- function(x, n=3L) {
+n_vars = length(names(x))
+res = rbind(
+        rep('Head', n_vars),
+        head(x, n = n),
+        rep('*-*-*', n_vars),
+        rep('Tail', n_vars),
+        tail(x, n = n)
+        )
+as_tibble(res)
+}
+```
+
+```{r}
+head_and_tail(x = mtcars, n = 2)
+```
+
+```{r}
+head_and_tail(letters, n = 2)
+```
+
+
+
