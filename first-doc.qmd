@@ -26,7 +26,7 @@ options(
 
 ## Quarto
 
-Min egen tekst.
+Noe nytt fjernet fra slutten.
 
 ##### Running Code
 
@@ -56,6 +56,9 @@ The `echo: false` option disables the printing of code (only output is displayed
 plot(cars)
 ```
 
+```{r}
+z <- 1:5
+```
 
 
 ```{r}
@@ -575,41 +578,5 @@ start_stupid_fun(x1 = 17, n = 6, d = 2)
 start_stupid_fun(x1 = 17, n = 6, d = 0.5)
 ```
 
-```{r}
-head_and_tail <- function(x) {
-  c(head(x), tail(x))
-}
-```
 
-```{r}
-head_and_tail(x = mtcars)
-```
-
-```{r}
-mtcars
-```
-
-```{r}
-head_and_tail <- function(x, n=3L) {
-n_vars = length(names(x))
-res = rbind(
-        rep('Head', n_vars),
-        head(x, n = n),
-        rep('*-*-*', n_vars),
-        rep('Tail', n_vars),
-        tail(x, n = n)
-        )
-as_tibble(res)
-}
-```
-
-```{r}
-head_and_tail(x = mtcars, n = 2)
-```
-
-```{r}
-head_and_tail(letters, n = 2)
-```
-
-Legger bare til litt tekst.
 
