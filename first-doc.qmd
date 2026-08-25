@@ -56,27 +56,7 @@ The `echo: false` option disables the printing of code (only output is displayed
 plot(cars)
 ```
 
-```{r}
-w <- c(2L, 3, "3")
-w
-```
 
-```{r}
-w <- c(2L, 3L, 3)
-w
-```
-
-```{r}
-typeof(w)
-```
-
-```{r}
-z <- c(3, 5, 1, 9)
-```
-
-```{r}
-z[-1]
-```
 
 ```{r}
 z[-3]
@@ -204,16 +184,6 @@ mtcars$mpg
 typeof(mtcars$mpg)
 ```
 
-### Hirarki
-
-1.  logical
-2.  integer
-3.  numeric
-4.  character
-
-```{r}
-x <- c(TRUE, FALSE, FALSE)
-```
 
 ```{r}
 x
