@@ -28,7 +28,7 @@ options(
 
 Noe nytt fjernet fra slutten.
 
-## Bare lit ny tekst
+## Bare litt ny tekst
 
 Her er ny tekst lagt til.
 
