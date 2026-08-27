@@ -1,3 +1,9 @@
+# ag
+*.pdf
+*.html
+*.docx
+*.pptx
+
 # History files
 .Rhistory
 .Rapp.history
