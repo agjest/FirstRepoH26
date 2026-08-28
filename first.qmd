@@ -7,12 +7,10 @@ format:
   typst: default
 lang: en
 editor: visual
-#csl: apa-no-ampersand.csl
+csl: apa-no-ampersand.csl
 #csl: harvard-review-of-psychiatry.csl
-csl: chicago-in-text-shortened-author-title.csl
-bibliography: 
-  - my.bib
-  - references.bib
+#csl: chicago-in-text-shortened-author-title.csl
+bibliography: [my.bib, references.bib]
 ---
 
 ## Sitering av pakker brukt
@@ -24,6 +22,10 @@ dplyr: [@dplyr]
 tidyverse: [@tidyverse]
 
 @tidyverse er en veldig kjekk pakke. Denne artikkelen har mange fine synspunkter [@broman2018]. [@datasets]
+
+Pakker: [@callr], [@clipr]
+
+Artikler: [@bechhofer2010; @gentleman2007]
 
 ## References
 
