@@ -2,9 +2,14 @@
 title: "First repo doc"
 author: "ag"
 citeproc: true
+papersize: a4
 format:
-  html: default
+  html: 
+    output-file: first-doc.html
   typst: default
+  revealjs:
+    incremental: true
+    smaller: true
 lang: en
 editor: visual
 csl: apa-no-ampersand.csl
@@ -13,19 +18,54 @@ csl: apa-no-ampersand.csl
 bibliography: [my.bib, references.bib]
 ---
 
+```{r}
+#| label: setup
+#| echo: false
+#| message: false
+library(tidyverse)
+library(flextable)
+```
+
 ## Sitering av pakker brukt
 
 Her er noen pakker som er brukt
 
-dplyr: [@dplyr]
+dplyr: @dplyr
 
-tidyverse: [@tidyverse]
+tidyverse: @tidyverse
 
 @tidyverse er en veldig kjekk pakke. Denne artikkelen har mange fine synspunkter [@broman2018]. [@datasets]
 
-Pakker: [@callr], [@clipr]
+- Pakker: @callr, @clipr
 
-Artikler: [@bechhofer2010; @gentleman2007]
+- Artikler: @bechhofer2010; @gentleman2007
+
+## Tabeller
+
+Tar i bruk *flextable* [@flextable].
+
+```{r}
+#| echo: false
+#| label: tbl-mtcars
+#| tbl-cap: Mtcars table produced by flextable.
+mtcars |> 
+  flextable() |> 
+  line_spacing(space = 0.1, part = "all") |> 
+  fontsize(size = 8, part = "all") |> 
+  bg(i = 4:7, j = 5, bg = "yellow") |> 
+  autofit()
+```
+
+## Plot
+
+In plot @fig-plotCars we have plotted the dataset `datasets::cars` in all its glory.
+
+```{r}
+#| echo: false
+#| label: fig-plotCars
+#| fig-cap: Classic plot of the cars dataset.
+plot(cars)
+```
 
 ## References
 
