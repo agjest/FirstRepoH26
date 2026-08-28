@@ -3,6 +3,7 @@ title: "First repo doc"
 author: "ag"
 citeproc: true
 papersize: a4
+toc: true
 format:
   html: 
     output-file: first-doc.html
@@ -30,7 +31,7 @@ library(flextable)
 
 Her er noen pakker som er brukt
 
-dplyr: @dplyr
+dplyr: @dplyr,
 
 tidyverse: @tidyverse
 
@@ -48,6 +49,7 @@ Tar i bruk *flextable* [@flextable].
 #| echo: false
 #| label: tbl-mtcars
 #| tbl-cap: Mtcars table produced by flextable.
+#| tbl-cap-location: margin
 mtcars |> 
   flextable() |> 
   line_spacing(space = 0.1, part = "all") |> 
@@ -58,7 +60,7 @@ mtcars |>
 
 ## Plot
 
-In plot @fig-plotCars we have plotted the dataset `datasets::cars` in all its glory.
+In plot @fig-plotCars we have plotted the dataset `datasets::cars` in all its glory. @fig-plotCars
 
 ```{r}
 #| echo: false
