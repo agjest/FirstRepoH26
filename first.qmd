@@ -1,31 +1,79 @@
 ---
 title: "First repo doc"
 author: "ag"
-format: html
+citeproc: true
+papersize: a4
+toc: true
+format:
+  html: 
+    output-file: first-doc.html
+  typst: default
+  revealjs:
+    incremental: true
+    smaller: true
+lang: en
 editor: visual
+csl: apa-no-ampersand.csl
+#csl: harvard-review-of-psychiatry.csl
+#csl: chicago-in-text-shortened-author-title.csl
+bibliography: [my.bib, references.bib]
 ---
 
-## Hei
-
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document.
-To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code.
-You can embed code like this:
-
 ```{r}
-1 + 1
+#| label: setup
+#| echo: false
+#| message: false
+library(tidyverse)
+library(flextable)
 ```
 
-You can add options to executable code like this
+## Sitering av pakker brukt
+
+Her er noen pakker som er brukt
+
+dplyr: @dplyr,
+
+tidyverse: @tidyverse
+
+@tidyverse er en veldig kjekk pakke. Denne artikkelen har mange fine synspunkter [@broman2018]. [@datasets]
+
+- Pakker: @callr, @clipr
+
+- Artikler: @bechhofer2010; @gentleman2007
+
+## Tabeller
+
+Tar i bruk *flextable* [@flextable].
 
 ```{r}
 #| echo: false
-2 * 2
+#| label: tbl-mtcars
+#| tbl-cap: Mtcars table produced by flextable.
+#| tbl-cap-location: margin
+mtcars |> 
+  flextable() |> 
+  line_spacing(space = 0.1, part = "all") |> 
+  fontsize(size = 8, part = "all") |> 
+  bg(i = 4:7, j = 5, bg = "yellow") |> 
+  autofit()
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+## Plot
+
+In plot @fig-plotCars we have plotted the dataset `datasets::cars` in all its glory. @fig-plotCars
+
+```{r}
+#| echo: false
+#| label: fig-plotCars
+#| fig-cap: Classic plot of the cars dataset.
+plot(cars)
+```
+
+## References
+
+::: {#refs}
+:::
+
+## Appendix
+
+Her er mitt appendiks.
