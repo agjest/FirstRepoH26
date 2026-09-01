@@ -1,0 +1,79 @@
+---
+title: "Data import/export"
+format: html
+editor: visual
+---
+
+```{r}
+#| label: setup
+#| message: false
+library(tidyverse)
+library(readxl)
+```
+
+## Lese inn Excel
+
+Wide format. Ikke så hensiktsmessig.
+
+```{r}
+#| message: false
+t10540xlsx <- readxl::read_xlsx(
+  path = "./Data/10540.xlsx"
+)
+```
+
+Long format
+
+```{r}
+#| message: false
+# 10540: Registrerte arbeidsledige (prosent), etter alder, måned og region
+# 15-74 år, Registrert helt arbeidsledige
+t10540xlsx_long <- readxl::read_xlsx(
+  path = "./Data/10540long.xlsx",
+  skip = 2
+)
+
+t10540xlsx_long <- t10540xlsx_long[-1, -1]
+
+# Fikser variabelnavn på første variabel
+names(t10540xlsx_long)[1] <- "Tid"
+
+# Dropper Ølen etc.
+t10540xlsx_long <- t10540xlsx_long[,1:28]
+
+# Dropper rekker med metadata
+t10540xlsx_long <- t10540xlsx_long[1:48,]
+
+names(t10540xlsx_long)[-1] <- paste0("k", names(t10540xlsx_long)[-1])
+```
+
+```{r}
+class(t10540xlsx_long)
+```
+
+```{r}
+t10540xlsx_long <- as_tibble(t10540xlsx_long)
+```
+
+```{r}
+# er en dataframe
+class(t10540xlsx_long)
+```
+
+```{r}
+# er en dataframe
+class(t10540xlsx_long$`k1106 Haugesund`)
+```
+
+
+
+```{r}
+
+
+median(as.numeric(t10540xlsx_long$`k1106 Haugesund`))
+
+
+median(as.double(unlist(t10540xlsx_long[,5])))
+```
+
+
