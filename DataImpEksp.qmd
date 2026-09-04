@@ -362,13 +362,6 @@ metadata_10540 <- ApiData(
 ```
 
 ```{r}
-metadata_12448 <- ApiData(
-  "http://data.ssb.no/api/v0/en/table/12448",
-  returnMetaFrames = TRUE
-  )
-```
-
-```{r}
 #Get more info about table
 ApiData(
 "http://data.ssb.no/api/v0/en/table/10540",
@@ -400,3 +393,47 @@ unemp99to02 <- ApiData12(
   # convert from dataframe to tibble
   as_tibble()
 ```
+
+NICE!
+
+```{r}
+unemp99to02_tmp <- ApiData12(
+  urlToData = "https://data.ssb.no/api/v0/en/table/10540/",
+  # or
+  # urlToData = "10540"
+  # Select all municipalities in Vest-Agder and Rogaland
+  Region = list(c("10*","11*")),
+  # Select two age groups
+  Alder = c("15-74"),
+  # select 1999M01:2002M12
+  Tid = list(c("1999*", "20*"))
+  ) |> 
+  # convert from dataframe to tibble
+  as_tibble()
+```
+
+```{r}
+metadata_12448 <- ApiData(
+  "https://data.ssb.no/api/v0/en/table/12448",
+  returnMetaFrames = TRUE
+  )
+```
+
+### Sykefravær
+
+```{r}
+syk00to09_tmp <- ApiData12(
+  urlToData = "https://data.ssb.no/api/v0/en/table/12448/",
+  # or
+  # urlToData = "12448"
+  # Select all municipalities in Vest-Agder and Rogaland
+  Region = list(c("10*","11*", "12*")),
+  # Select two age groups
+  Alder = list(c("0*")),
+  ContentsCode = "Sykefraversprosent",
+  Tid = list(c("200*"))
+  ) |> 
+  # convert from dataframe to tibble
+  as_tibble()
+```
+
