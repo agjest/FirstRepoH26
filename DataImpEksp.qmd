@@ -257,8 +257,6 @@ tmp <- read.csv2(
 View(tmp[,-1])
 ```
 
-
-
 ```{r}
 # Fra Claude
 df <- read_delim(
@@ -294,7 +292,6 @@ write.csv(
 )
 ```
 
-
 ```{r}
 write.csv(
   x = df1,
@@ -318,15 +315,15 @@ df1_imp <- read.csv(
 We have to get the read just right, else we will end up with a lot of pain.
 :::
 
-En siste ting. « Registrert helt arbeidsledige» i nesten alle variabelnavnene er en plage. Vi kan få dem bort vha.
+En siste ting.
+« Registrert helt arbeidsledige» i nesten alle variabelnavnene er en plage.
+Vi kan få dem bort vha.
 
 ```{r}
 # str_replace_all er fra stringr pakken i tidyverse 
 # som vi skal lære mer om senere
 names(df)[-c(1:2)] <- str_replace_all(tail(names(df), n = -2), " Registrert helt arbeidsledige", "")
 ```
-
-
 
 ```{r}
 #| label: lst-gsub
@@ -415,7 +412,7 @@ unemp99to02_tmp <- ApiData12(
 ```{r}
 metadata_12448 <- ApiData(
   "https://data.ssb.no/api/v0/en/table/12448",
-  returnMetaFrames = TRUE
+  returnMetaFrames = TRUE 
   )
 ```
 
@@ -436,4 +433,24 @@ syk00to09_tmp <- ApiData12(
   # convert from dataframe to tibble
   as_tibble()
 ```
+
+```{r}
+syk00to09_tmp <- ApiData12(
+  urlToData = "12448",
+  # or
+  # urlToData = "12448"
+  # Select all municipalities in Vest-Agder and Rogaland
+  urlType = "SSBen",
+  Region = list(c("10*","11*", "12*")),
+  # Select two age groups
+  Alder = list(c("0*")),
+  ContentsCode = "Sykefraversprosent",
+  Tid = list(c("20*"))
+  ) |> 
+  # convert from dataframe to tibble
+  as_tibble()
+```
+
+
+
 
