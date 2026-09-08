@@ -18,6 +18,25 @@ options(
 
 ## `ggplot()`
 
+Empty canvas
+
+```{r}
+ggplot()
+```
+
+We give ggplot the variables and it can set up the axis.
+
+```{r}
+ggplot(
+  data = mtcars,
+  mapping = aes(x = disp, y = mpg)
+) +
+  geom_point()
+```
+
+We build the graphic using `aes()`, i.e. aesthetics, in `geom_*()
+
+
 ```{r}
 ggplot(data = mtcars, mapping = aes(x = disp, y = mpg)) +
   geom_point()
@@ -125,5 +144,115 @@ ggplot(
 mtcars |> 
   as_tibble()
 ```
+
+
+```{r}
+ggplot(
+  data = mtcars,
+  mapping = aes(x = disp, y = mpg)
+) +
+  geom_point()
+```
+
+```{r}
+ggplot(
+  data = mtcars,
+  mapping = aes(x = disp, y = mpg)
+) +
+  geom_point(
+    mapping = aes(colour = hp), size = 3
+  )
+```
+
+
+```{r}
+ggplot(
+  data = mtcars,
+  mapping = aes(x = disp, y = mpg)
+) +
+  geom_point(
+    mapping = aes(colour = hp, size = wt)
+  )
+```
+
+
+Hvordan illustrer antall sylindre i denne figuren?
+
+Bruk shape egenskapen til å illustrere antall sylindre.
+
+```{r}
+#| eval: false
+ggplot(
+  data = mtcars,
+  mapping = aes(x = disp, y = mpg)
+) +
+  geom_point(
+    mapping = aes(
+      colour = hp, 
+      size = wt, 
+      shape = factor(cyl, levels = c("4", "6", "8"))
+      )
+  )
+```
+
+```{r}
+#| eval: false
+#| message: false
+ggplot(
+  data = mtcars,
+  mapping = aes(x = disp, y = mpg)
+) +
+  geom_smooth(
+    method = "lm",
+    level = 0.99,
+    colour = "gray90"
+  ) +
+  geom_smooth(
+    method = "lm",
+    level = 0.95,
+    colour = "gray60"
+  ) +
+  geom_point(
+    mapping = aes(
+      colour = hp, 
+      size = wt, 
+      shape = factor(cyl, levels = c("4", "6", "8"))
+      )
+  )
+```
+
+Bruk av `alpha`
+
+```{r}
+#| eval: false
+#| message: false
+ggplot(
+  data = mtcars,
+  mapping = aes(x = disp, y = mpg)
+) +
+  geom_smooth(
+    method = "lm",
+    level = 0.99,
+    colour = "gray90"
+  ) +
+  geom_smooth(
+    method = "lm",
+    level = 0.95,
+    colour = "gray60"
+  ) +
+  geom_point(
+    mapping = aes(
+      alpha = hp, 
+      size = wt, 
+      #shape = factor(cyl, levels = c("4", "6", "8"))
+      ), colour = "brown"
+  ) +
+  facet_wrap(
+    vars(fct(as.character(am)), cyl)
+  )
+```
+
+Finn ut hvordan en får am på vertikal akse. Legg til hele datasettet i bakgrunnen.
+
 
 
