@@ -221,38 +221,51 @@ ggplot(
   )
 ```
 
-Bruk av `alpha`
+- Facet scatterplot med gear-type vertikal akse og antall sylindre på horisontal akse i facet. 
+- Ser ut til at en må bruke facet_grid() og `~` for å få aksene i facet fint satt opp
+
 
 ```{r}
-#| eval: false
 #| message: false
+
+mtcars_small <- mtcars[,c("disp", "mpg")]
+# egen, fikset kopi av mtcars
+mtcars$am <- fct(ifelse(mtcars$am == 0, "auto", "manual"))
+mtcars$cyl = fct(as.character(mtcars$cyl), levels = c("4", "6", "8"))
+
 ggplot(
   data = mtcars,
   mapping = aes(x = disp, y = mpg)
-) +
-  geom_smooth(
-    method = "lm",
-    level = 0.99,
-    colour = "gray90"
+) + geom_point(
+  # new data to get plot of all points
+    data = mtcars[,c("disp", "mpg")],
+    colour = "gray70"
+  ) + geom_point(
+    mapping = aes(colour = cyl)
+  ) + 
+  labs(colour = "antall\nsylindre") +
+  facet_grid(
+    am~cyl
   ) +
   geom_smooth(
     method = "lm",
-    level = 0.95,
-    colour = "gray60"
-  ) +
-  geom_point(
-    mapping = aes(
-      alpha = hp, 
-      size = wt, 
-      #shape = factor(cyl, levels = c("4", "6", "8"))
-      ), colour = "brown"
-  ) +
-  facet_wrap(
-    vars(fct(as.character(am)), cyl)
+    se = FALSE
   )
 ```
 
-Finn ut hvordan en får am på vertikal akse. Legg til hele datasettet i bakgrunnen.
+```{r}
+mtcars |> 
+  as_tibble()
+```
 
+```{r}
+rm(mtcars)
+```
 
+```{r}
+mtcars |> 
+  as_tibble()
+```
+
+Hva skjer? R namespaces
 
