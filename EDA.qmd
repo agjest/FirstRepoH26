@@ -1,0 +1,51 @@
+---
+title: "chp. 7 EDA"
+format: html
+editor: visual
+---
+
+```{r}
+#| label: setup
+library(tidyverse)
+```
+
+
+## EDA
+
+```{r}
+#| eval: false
+# create a bib file for the R packages 
+# used in this document
+# Note! Needs to do a `touch eda.bib` in terminal before first run
+# else stops when bibliography: "eda.bib" not found in YAML
+packs <- c("tidyverse", "nycflights13", "gridExtra",
+           "modelr", "grid", "ggplotify", "vtable", "flextable")
+knitr::write_bib(
+  packs,
+  file = "eda.bib"
+  )
+rm(packs)
+```
+
+```{r}
+heights <- modelr::heights
+```
+
+```{r}
+heights |> 
+  ggplot(mapping =aes(x = height, y = income)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+```{r}
+heights |> 
+  filter(income < 300000) |> 
+  ggplot(mapping =aes(x = height, y = income)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+
+
+

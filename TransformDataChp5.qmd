@@ -52,12 +52,219 @@ flights |>
 ```
 
 ```{r}
+#| eval: false
 flights |> 
   filter(
     month == 1, 
     day %in% c(1, 15, 30)
     ) |> 
   View()
+```
+
+## Operatorer
+
+```{r}
+5 == 5
+```
+
+```{r}
+7000 == 7000
+```
+
+```{r}
+7000L == 7000L
+```
+
+```{r}
+7000L == 7000
+```
+
+```{r}
+1/5 * 5 == 5/5
+```
+
+```{r}
+1/79 * 79 == 79/79
+```
+
+```{r}
+#| message: false
+library(tidyverse)
+near(1/79 * 79, 79/79)
+```
+
+```{r}
+!near(1/79 * 79, 79/79)
+```
+
+```{r}
+TRUE | FALSE
+```
+
+```{r}
+TRUE & FALSE
+```
+
+```{r}
+x <- 2L
+x %in% c(1L, 3L)
+```
+
+```{r}
+#| eval: false
+x <- 2L
+x %nin% c(1L, 3L)
+```
+
+```{r}
+x <- 2L
+!(x %in% c(1L, 3L))
+```
+
+```{r}
+# and
+(1/49) * 49 == 49/49
+```
+
+```{r}
+1/79 * 79 == 79/79
+```
+
+```{r}
+(1/79) * 79 == 79/79
+```
+
+```{r}
+flights <- get(data(flights))
+```
+
+### Antall flyvninger i april og september
+
+```{r}
+flights |> 
+  filter(month == 4L | month == 9L) |> 
+  nrow()
+```
+
+
+```{r}
+flights |> 
+  filter(month %in% c(4L, 9L)) |> 
+  nrow()
+```
+
+```{r}
+flights |> 
+  filter(!(month %in% c(4L, 9L))) |> 
+  nrow()
+```
+
+
+```{r}
+flights |> 
+  filter(day %in% c(1,2)) |> 
+  nrow()
+```
+
+
+```{r}
+flights |> 
+  filter(arr_delay >= 15 & arr_delay < 30) |> 
+  nrow()
+```
+
+```{r}
+# classic code
+flights_df <- as.data.frame(flights)
+# returns vector
+#flights_df[flights_df$arr_delay >= 15 & flights_df$arr_delay < 30, "arr_delay"]
+length(flights_df[flights_df$arr_delay >= 15 & flights_df$arr_delay < 30, "arr_delay"])
+# ?????????
+```
+
+```{r}
+length(flights[flights$arr_delay >= 15 & flights$arr_delay < 30, "arr_delay"])
+#????????
+```
+
+```{r}
+dim(flights[flights$arr_delay >= 15 & flights$arr_delay < 30, "arr_delay"])
+#?????????
+```
+
+
+```{r}
+table(is.na(flights_df[flights_df$arr_delay >= 15 & flights_df$arr_delay < 30, "arr_delay"]))
+```
+
+```{r}
+# Virker ikke
+length(flights_df[!is.na(flights_df$arr_delay >= 15 & flights_df$arr_delay < 30), "arr_delay"])
+```
+
+```{r}
+# Use a pipe
+flights %>%
+  filter(month == 5) %>%
+  # renaming of variable in select() function
+  select(arrival_delay = arr_delay) |> 
+  pull() |> 
+  median(na.rm = TRUE)
+```
+
+```{r}
+# Use a pipe
+flights %>%
+  filter(month == 5) %>%
+  # renaming of variable in select() function
+  select(arrival_delay = arr_delay) |> 
+  # to remove NAs
+  filter() |> 
+  pull() |> 
+  median(na.rm = TRUE)
+```
+
+```{r}
+# Use a pipe
+flights %>%
+  filter(month == 5) %>%
+  # renaming of variable in select() function
+  select(arrival_delay = arr_delay) %>% 
+  .$arrival_delay |> 
+  median(na.rm = TRUE)
+```
+
+```{r}
+#| paged.print: false
+flights %>%
+  select(year:day, ends_with("delay"), distance, air_time) %>%
+  mutate(
+    gain = dep_delay - arr_delay,
+    speed = (distance/air_time) * 60
+    ) %>%
+  select(year:day, gain, everything()) %>%
+  arrange(gain)
+```
+
+```{r}
+#| paged.print: false
+flights %>%
+  select(year:day, ends_with("delay"), distance, air_time) %>%
+  mutate(
+    gain = dep_delay - arr_delay,
+    speed = (distance/air_time) * 60
+    ) %>%
+  select(year:day, gain, everything()) %>%
+  arrange(gain)
+```
+
+```{r}
+#| paged.print: false
+flights %>%
+  group_by(month) %>%
+  summarise(
+    median_arr_delay = median(arr_delay, na.rm = TRUE)
+    )
 ```
 
 
