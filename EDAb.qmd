@@ -1,0 +1,69 @@
+---
+title: "EDA"
+format: html
+editor: visual
+---
+
+## Heights
+
+```{r}
+#| label: setup
+#| messages: false
+library(tidyverse)
+library(modelr)
+library(flextable)
+```
+
+```{r}
+heights <- heights
+```
+
+```{r}
+heights |> 
+  filter(income < 300000) |> 
+  ggplot(
+    mapping = aes(x = height, y = income)
+  ) + 
+  geom_point() +
+  geom_smooth(formula = 'y ~ x', method = "lm")
+```
+
+```{r}
+#| paged.print: false
+heights |> 
+  is.na() |> 
+  as_tibble()
+```
+
+```{r}
+heights |> 
+  summary()
+```
+
+```{r}
+#| paged.print: false
+# package vtable 
+# must be installed
+heights %>% 
+  select(
+    -marital, 
+    -sex
+    ) %>% 
+  # . to stop RStudio 
+  # complaining about 
+  # no data
+  vtable::st(data = ., out = "return") |> 
+  as_flextable(
+    show_coltype = FALSE,
+    max_row = 30
+  ) |> 
+  line_spacing(
+    space = 0.3
+  ) |> 
+  delete_part(
+    "footer"
+  )
+```
+
+
+

@@ -6,7 +6,15 @@ editor: visual
 
 ```{r}
 #| label: setup
+#| include: false
 library(tidyverse)
+library(nycflights13)
+library(gridExtra)
+library(modelr)
+library(grid)
+library(ggplotify)
+library(vtable)
+library(flextable)
 ```
 
 
@@ -46,6 +54,33 @@ heights |>
   geom_smooth(method = "lm")
 ```
 
+```{r}
+heights %>% 
+  mutate(
+    edu_fac = cut(education, 
+                  breaks = c(0, 12, 14, 16, 21), 
+                  labels = c("NotHS", "NotTC", "NotC", "C+"),
+                  right = FALSE) 
+  ) %>% 
+  filter(income < 1) %>%
+  select(sex, edu_fac) %>%
+  group_by(sex) %>%
+  table()
+```
 
+```{r}
+heights %>% 
+  filter(income > 0 & !is.na(weight) & !is.na(afqt) & !is.na(education)) %>%
+  ggplot() +
+  geom_point(mapping = aes(x = education, y = income), alpha = 0.05)
+```
 
+```{r}
+# using drop_na() makes it easier
+heights |> 
+  drop_na() |> 
+  filter(income > 0) %>%
+  ggplot() +
+  geom_point(mapping = aes(x = education, y = income), alpha = 0.05)
+```
 
