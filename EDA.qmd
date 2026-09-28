@@ -84,3 +84,73 @@ heights |>
   geom_point(mapping = aes(x = education, y = income), alpha = 0.05)
 ```
 
+
+```{r}
+heights %>% 
+  mutate(
+    edu_fac = cut(education, 
+                  breaks = c(0, 12, 14, 16, 21), 
+                  labels = c("NotHS", "NotTC", "NotC", "C+"),
+                  right = FALSE) 
+  ) %>% 
+  select(income, edu_fac) |> 
+  drop_na() |> 
+  filter(income > 0) %>%
+ggplot(mapping = aes(x = income, y = after_stat(density))) +
+  geom_freqpoly(mapping = aes(colour = edu_fac), binwidth = 10000)
+```
+
+```{r}
+heights %>% 
+  mutate(
+    edu_fac = cut(education, 
+                  breaks = c(0, 12, 14, 16, 21), 
+                  labels = c("NotHS", "NotTC", "NotC", "C+"),
+                  right = FALSE) 
+  ) %>% 
+  select(marital, edu_fac, income) |> 
+  drop_na() |> 
+  filter(income > 0) %>%
+  ggplot() +
+  geom_count(mapping = aes(x = marital, y = edu_fac))
+```
+
+```{r}
+heights %>% 
+  mutate(
+    edu_fac = cut(education, 
+                  breaks = c(0, 12, 14, 16, 21), 
+                  labels = c("NotHS", "NotTC", "NotC", "C+"),
+                  right = FALSE) 
+  ) %>% 
+  filter(income > 0 & !is.na(weight) & !is.na(afqt) & !is.na(edu_fac)) %>%
+  ggplot() +
+  geom_count(mapping = aes(x = marital, y = edu_fac))
+```
+
+```{r}
+diamonds %>% 
+  ggplot(mapping = aes(x = carat, y = price)) +
+  geom_point(size = 0.1)
+```
+
+```{r}
+diamonds %>% 
+  ggplot(mapping = aes(x = carat, y = price)) +
+  geom_point(size = 0.1, alpha = 0.05)
+```
+
+```{r}
+diamonds %>% 
+  filter(carat <= 2.5) |> 
+  ggplot(mapping = aes(x = carat, y = price)) +
+  geom_point(mapping = aes(colour = color), size = 0.2, alpha = 0.15)
+```
+
+```{r}
+diamonds %>% 
+  filter(carat <= 2) %>% 
+  ggplot(mapping = aes(x = carat, y = price)) +
+  geom_boxplot(mapping = aes(group = cut_width(carat, 0.1)))
+```
+
