@@ -1,0 +1,55 @@
+---
+title: "Wrangle"
+format: html
+editor: visual
+---
+
+```{r}
+df <- data.frame(
+  2002 = 23.22,
+  2003 = 12.02,
+  2004 = 27.61
+)
+```
+
+```{r}
+df <- data.frame(
+  `2002` = 23.22,
+  `2003` = 12.02,
+  `2004` = 27.61
+)
+```
+
+```{r}
+#| paged.print: false
+df
+```
+
+```{r}
+tib <- tibble(
+  `2002` = 23.22,
+  `2003` = 12.02,
+  `2004` = 27.61
+)
+```
+
+```{r}
+#| paged.print: false
+tib
+```
+
+```{r}
+#| paged.print: false
+mtcars
+```
+
+
+```{r}
+mtcars_tib <- as_tibble(mtcars, rownames = "Model")
+```
+
+```{r}
+#| paged.print: false
+mtcars_tib
+```
+
