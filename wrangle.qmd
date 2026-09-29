@@ -53,3 +53,40 @@ mtcars_tib <- as_tibble(mtcars, rownames = "Model")
 mtcars_tib
 ```
 
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+#| paged.print: false
+table4a
+```
+
+
+```{r}
+#| paged.print: false
+tidy4a <- table4a %>% 
+  pivot_longer(
+    cols = -country,
+    names_to = "year", 
+    values_to = "cases")
+tidy4a
+```
+
+```{r}
+#| paged.print: false
+tidy4a <- table4a %>% 
+  mutate(
+    `1999` = as.character(`1999`),
+    `2000` = as.character(`2000`),
+  ) |> 
+  pivot_longer(
+    cols = country:`2000`,
+    names_to = "year", 
+    values_to = "cases")
+tidy4a
+```
+
+
+
