@@ -1,0 +1,38 @@
+---
+title: "Joins"
+format: html
+editor: visual
+---
+
+## Joins
+
+```{r}
+#| label: setup
+#| message: false
+library(tidyverse)
+library(nycflights13)
+# opsjoner
+options(paged.print = FALSE)
+```
+
+```{r}
+# it's a tibble
+flights |> class()
+```
+
+```{r}
+flights |> head(n = 3)
+```
+
+```{r}
+airlines |> head(n = 3)
+```
+
+```{r}
+airports |> head(n = 3)
+```
+
+```{r}
+weather |> head(n = 3)
+```
+
