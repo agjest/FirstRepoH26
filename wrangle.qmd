@@ -5,6 +5,14 @@ editor: visual
 ---
 
 ```{r}
+#| label: setup
+library(tidyverse)
+```
+
+
+
+```{r}
+#| eval: false
 df <- data.frame(
   2002 = 23.22,
   2003 = 12.02,
@@ -86,6 +94,237 @@ tidy4a <- table4a %>%
     names_to = "year", 
     values_to = "cases")
 tidy4a
+```
+
+
+### Separate
+
+```{r}
+tidy3 <- table3 %>% 
+  separate(col = rate,
+           into = c("cases", "pop"),
+           sep = "/"
+           )
+```
+
+
+```{r}
+#| paged.print: false
+tidy3century <- tidy3 %>% 
+  separate(col = year,
+           into = c("century", "year"),
+           sep = 2
+           )
+tidy3century
+```
+
+### Unite
+
+```{r}
+#| paged.print: false
+tidy3century %>% 
+  unite(
+    col = year,
+    century, year, # the columns we want to unite
+    sep = "" # what happens witout sep?
+  )
+```
+
+### Missing values
+
+```{r}
+stocks <- tibble(
+  year   = c(2015, 2015, 2015, 
+             2015, 2016, 2016, 2016),
+  qtr    = c(   1,    2,    3,    
+                4,    2,    3,    4),
+  return = c(1.88, 0.59, 0.35,
+             NA, 0.92, 0.17, 2.66)
+)
+```
+
+```{r}
+#| paged.print: false
+# explicitly missing and implicitly missing
+stocks
+```
+
+```{r}
+#| paged.print: false
+stocks_wider <- stocks %>% 
+  pivot_wider(
+    names_from = year,
+    values_from = return
+    )
+stocks_wider
+```
+
+```{r}
+#| paged.print: false
+stocks_wider <- stocks %>% 
+  pivot_wider(
+    names_from = year,
+    names_prefix = "y",
+    values_from = return
+    )
+stocks_wider
+```
+
+```{r}
+#| paged.print: false
+stocks_wider %>% 
+  pivot_longer(
+    cols = -qtr,
+    names_to = "year", # in quote since it does not exist yet
+    values_to = "return",
+    values_drop_na = TRUE,
+    names_prefix = "y"
+  ) %>% 
+  arrange(year, qtr)
+```
+
+```{r}
+#| paged.print: false
+stocks %>% 
+  complete(year, qtr)
+```
+
+### fill
+
+```{r}
+#| paged.print: false
+treatment <- tribble(
+  ~ person,           ~ treatment, ~response,
+  "Derrick Whitmore", 1,           7,
+  NA,                 2,           10,
+  NA,                 3,           9,
+  "Katherine Burke",  1,           4
+)
+treatment
+```
+
+```{r}
+#| paged.print: false
+treatment %>% 
+  fill(
+    person, 
+    .direction = c("down")
+    )
+```
+
+```{r}
+#| paged.print: false
+treatment %>% 
+  fill(
+    person, 
+    .direction = c("up")
+    )
+```
+
+
+```{r}
+#| eval: false
+#| paged.print: false
+treatmentB <- treatment
+treatmentB[2,2] <- NA
+treatmentB[3,2] <- NA
+treatmentB
+```
+
+```{r}
+#| eval: false
+#| paged.print: false
+treatment %>% 
+  fill(
+    c(person, treatment),
+    .direction = c("down", "up")
+    )
+```
+
+### WHO
+
+```{r}
+dim(who)
+```
+
+```{r}
+#| eval: false
+View(who)
+```
+
+```{r}
+#| paged.print: false
+who <- who %>% 
+  pivot_longer(
+    cols = new_sp_m014:newrel_f65,
+    names_to = "key",
+    values_to = "cases",
+    values_drop_na = TRUE
+    )
+who
+```
+
+```{r}
+who <- who %>% 
+  mutate(
+    key = str_replace(key, "newrel", "new_rel")
+  )
+```
+
+```{r}
+#| paged.print: false
+who |> 
+  tail()
+```
+
+```{r}
+View(who)
+```
+
+```{r}
+# Fjerner new_
+who <- who %>% 
+  mutate(
+    key = str_replace(key, "new_", "")
+  )
+```
+
+```{r}
+#| paged.print: false
+who <- who %>% 
+  separate(col = key,
+           into = c("type", "sexage"),
+           sep = "_"
+           )
+who
+```
+
+```{r}
+#| paged.print: false
+who <- who %>% 
+  select(-iso2, -iso3) %>% 
+  separate(col = sexage,
+           into = c("sex", "age"),
+           sep = 1
+           )
+who
+```
+
+```{r}
+who <- who %>% 
+  mutate(
+    age = str_pad(age, width = 4, side = "left", pad = "0"),
+    age = str_replace(age, "0065", "6599")
+  ) %>% 
+  separate(col = age,
+           into = c("age_start", "age_end"),
+           sep = 2
+           )
+```
+
+```{r}
+#| paged.print: false
+who
 ```
 
 

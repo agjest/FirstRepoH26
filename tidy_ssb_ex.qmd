@@ -1,0 +1,123 @@
+---
+title: "Tidy data SSB example"
+format: html
+editor: visual
+---
+
+```{r}
+#| label: setup
+#| messages: false
+library(tidyverse)
+library(PxWebApiData)
+```
+
+```{r}
+tmp <- ApiData12(
+  urlToData = "https://data.ssb.no/api/v0/en/table/03723/",
+  Tid = list(c("2025M1*", "2026M*")),
+  Byggeareal = list(c("*")),
+  Region = list(c("*"))
+)
+```
+
+```{r}
+#| paged.print: false
+tmp |> as_tibble()
+```
+
+Tidy? NO!
+
+```{r}
+#| paged.print: false
+tmp |> select(region) |> unique()
+```
+
+```{r}
+#| paged.print: false
+tmp |> select(`type of building`) |> unique()
+```
+
+```{r}
+#| paged.print: false
+tmp |> select(contents) |> unique()
+```
+
+Hva er dette? Se dokumentasjon. Kodene likner på kodene for boligtype.
+
+```{r}
+#| paged.print: false
+tmp |> select(Byggeareal) |> unique()
+```
+
+```{r}
+#| paged.print: false
+tmp |> select(ContentsCode) |> unique()
+```
+
+Hvor skal vi starte?
+
+Få disse i egne kolonner (vha. `pivot_wider()`):
+
+```{r}
+#| paged.print: false
+tmp |> select(contents) |> unique()
+```
+
+Samme info vi har i ContensCode
+
+```{r}
+#| paged.print: false
+tmp |> select(ContentsCode) |> unique()
+```
+
+Dropper contents og bruker ContentsCode til å hente variabelnavn. Splitter først Tid i year og month. Har alt en variabel month som inneholder samme verdier som Tid. Dropper denne for å kunne lage en ny month variabel.
+
+Splitter Tid i år og måned
+
+```{r}
+tmp <- tmp |> 
+  select(-month) |> 
+  separate_wider_delim(Tid, delim = "M", names = c("year", "month")) |> 
+  mutate(
+    year = as.integer(year),
+    month = as.integer(month)
+  )
+```
+
+```{r}
+tmp <- tmp |> 
+  select(-contents) |> 
+  pivot_wider(
+    names_from = ContentsCode,
+    values_from = value
+  )
+```
+
+Ordner litt på rekkefølgen av variablene og rekkefølgen av observasjonene
+
+```{r}
+tmp <- tmp |> 
+  select(
+    Region,
+    region,
+    År = year,
+    Måned = month,
+    Bygg_type_kode = Byggeareal,
+    Bygg_type_tekst = `type of building`,
+    BoligIgang:BruksarealFullf
+    ) |> 
+  # locale må være riktig satt for at År og Måned skal funke
+  arrange(Region, desc(År), desc(Måned), Bygg_type_kode)
+```
+
+
+Bør vurdere å legge Total tallene i egne tabeller. Hvordan gjør man det?
+
+```{r}
+
+```
+
+
+
+
+
