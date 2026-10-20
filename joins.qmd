@@ -16,6 +16,76 @@ options(paged.print = FALSE)
 ```
 
 ```{r}
+X <- tibble(
+  key = paste0("k", seq(1, 7, by = 2)),
+  xx = paste0("x", 1:4)
+)
+
+X
+```
+
+```{r}
+Y <- tibble(
+  key = paste0("k", 1:6),
+  xy = paste0("x", 1:6)
+)
+
+Y
+```
+
+### Left Join
+
+All Xs.
+
+```{r}
+left_join(
+  x = X,
+  y = Y,
+  by = join_by(key)
+)
+```
+
+### Right Join
+
+All Ys
+
+```{r}
+right_join(
+  x = X,
+  y = Y,
+  by = join_by(key)
+)
+```
+
+### Inner Join
+
+Those that are in both X and Y
+
+```{r}
+inner_join(
+  x = X,
+  y = Y,
+  by = join_by(key)
+)
+```
+
+### Full Join
+
+All combinations of X and Y
+
+```{r}
+full_join(
+  x = X,
+  y = Y,
+  by = join_by(key)
+) |> 
+  arrange(key)
+```
+
+
+## Flights example
+
+```{r}
 # it's a tibble
 flights |> class()
 ```
@@ -51,5 +121,195 @@ flights %>%
   head(3)
 ```
 
+We have to check names. Do any overlap. Do they have the same content. If so they might be used as a key. If not we have to be careful and use prefix/suffix to keep them distinct.
 
+```{r}
+# alternative
+intersect(names(flights), names(planes))
+```
+
+Year has different meaning in the two tables, 2013 in flights (of no importance) the year an aircraft was built in the *planes* table.
+
+#### suffix
+
+```{r}
+tmp <- flights %>% 
+  left_join(planes, by = join_by("tailnum"), 
+            suffix = c("", "_plane"))
+
+tmp %>% 
+  select(tailnum, model, 
+         year_plane, year, everything()) %>% 
+  head(n = 3) |> 
+  print(width = 80)
+```
+
+Seems to work so I do:
+
+```{r}
+flights <- flights %>% 
+  left_join(planes, by = join_by("tailnum"), 
+            suffix = c("", "_plane"))
+```
+
+i.e. update flights
+
+## Join information about origin and destination airports 
+
+```{r}
+unique(flights$origin)
+```
+
+```{r}
+flights |> 
+  select(origin) |> 
+  distinct()
+```
+
+```{r}
+# som vektor
+flights |> 
+  select(origin) |> 
+  distinct() |> 
+  pull()
+```
+
+```{r}
+# som vektor
+flights |> 
+  select(dest) |> 
+  distinct() |> 
+  pull()
+```
+
+
+
+Check names
+
+```{r}
+intersect(names(flights), names(airports))
+```
+
+```{r}
+head(flights$name)
+```
+
+```{r}
+head(airports$name)
+```
+
+```{r}
+flights <- flights %>% 
+  left_join(airports,
+            # Note new syntax
+            by = join_by(origin == faa), 
+            suffix = c("_airline", "_origin_airport"), 
+            keep = TRUE
+            ) %>% 
+  select(year:day, name_airline, name_origin_airport, everything())
+head(flights, n = 3) |> 
+   print(width = 80)
+```
+
+```{r}
+intersect(
+  names(flights),
+  names(airports)
+)
+```
+
+```{r}
+head(flights$dest)
+```
+
+```{r}
+head(airports$faa)
+```
+
+```{r}
+sample(airports$faa, 10)
+```
+
+
+```{r}
+#work with tmp until correct then 
+#change to flights
+flights <- flights %>% 
+  left_join(
+    y = airports, 
+    by = join_by(dest == faa),
+    suffix = c("_origin", "_dest")
+    ) |> 
+  select(faa, origin, dest, lat_origin, lat_dest, everything())
+
+names(flights) |> 
+  print(width = 80)
+```
+
+```{r}
+weather |> filter(origin == "JFK") |> select(hour) |> table()
+```
+
+```{r}
+set.seed(666)
+(x <- sample(flights$dep_time, size = 30)) |> 
+  print(width = 80)
+```
+
+```{r}
+str_pad(x, width = 4, side = "left", pad = "0") |> 
+  print(width = 80)
+```
+
+```{r}
+x |> 
+str_pad(width = 4, side = "left", pad = "0") |> 
+str_sub(start = 1, end = 2) |> 
+as.numeric() |> 
+print(width = 80)
+```
+
+```{r}
+fix_dep_time <- function(x) {
+  x = str_pad(x, width = 4, side = "left", pad = "0")
+  x = str_sub(x, start = 1, end = 2)
+  # This is correct since hour 0: 23 in weather dataset
+  # Note that not all days have hour = 0
+  x = as.integer(x)
+  return(x)
+  }
+```
+
+```{r}
+flights <- flights %>% 
+  mutate(
+    dep_time_hour = fix_dep_time(dep_time)
+  )
+```
+
+```{r}
+intersect(names(flights), names(weather))
+```
+
+```{r}
+flights <- flights %>% 
+  left_join(weather, 
+            #by = c("origin", "year", "month", "day", "dep_time_hour" = "hour"),
+            by = join_by(origin, year, month, day, dep_time_hour == hour),
+            suffix = c("", "_weather"), 
+            keep = FALSE
+            )
+```
+
+```{r}
+flights <- flights %>% 
+  select(year, month, day, dep_time, everything())
+
+flights %>%  print(width = 80)
+```
+
+```{r}
+flights |> 
+  names()
+```
 
