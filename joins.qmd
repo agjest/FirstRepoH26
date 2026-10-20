@@ -36,3 +36,20 @@ airports |> head(n = 3)
 weather |> head(n = 3)
 ```
 
+```{r}
+flights <- flights %>% 
+  # note x = flights, y = airlines
+  left_join(
+    y = airlines, 
+    by = join_by("carrier")
+    )
+```
+
+```{r}
+flights %>% 
+  select(carrier, name, everything()) %>% 
+  head(3)
+```
+
+
+
