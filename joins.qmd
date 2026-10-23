@@ -313,3 +313,14 @@ flights |>
   names()
 ```
 
+Litt mer ordnete data.
+
+```{r}
+#| eval: false
+flights |> 
+  select(origin, month:dep_time, dep_time_hour, temp:visib, everything()) |> 
+  arrange(month, day, origin, dep_time, dep_time_hour) |> 
+  View()
+```
+
+
