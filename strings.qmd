@@ -1,0 +1,99 @@
+---
+title: "Strings; chp 14"
+format: html
+editor: visual
+---
+
+```{r}
+#| label: setup
+library(tidyverse)
+```
+
+
+## Strings
+
+```{r}
+x <- c(321, 12111, 1978)
+str_pad(x, width = 7, side = "left", pad = "0")
+```
+
+```{r}
+y <- str_replace(x, pattern = "1", replacement = "9");y
+```
+
+```{r}
+z <- str_replace_all(y, pattern = "9", replacement = "ab");z
+```
+
+```{r}
+# * betyr null eller flere, alpha er STORE og små bokstaver
+str_extract(z, pattern = "[:alpha:]*(\\d*)", group = 1)
+```
+
+```{r}
+# + betyr 1 eller flere, alpha er STORE og små bokstaver
+str_extract(z, pattern = "[:alpha:]+(\\d*)", group = 1)
+```
+
+```{r}
+# + betyr 1 eller flere, alpha er STORE og små bokstaver
+str_extract(z, pattern = "([:alpha:]+)\\d*", group = 1)
+```
+
+```{r}
+# + betyr 1 eller flere, alpha er STORE og små bokstaver
+str_extract(z, pattern = "([:alpha:]+)", group = 1)
+```
+
+```{r}
+#| eval: false
+# tidyverse version of paste0()
+z <- str_c(z, collapse = ""); z
+```
+
+
+```{r}
+str_match(z, pattern = "(\\d+)[a,b]+\\d+([:alpha:]+)(.*)")
+```
+
+```{r}
+# tidyverse version of paste0()
+z <- str_c(z, "ghghj%Y#&ggg1", collapse = ""); z
+```
+
+```{r}
+str_match(z, pattern = "(\\d+)[a,b]+\\d+([:alpha:]+)(.*)")
+```
+
+
+```{r}
+str_sub("string", start = 2L, end = 4L)
+```
+
+## Regexp
+
+```{r}
+x <- c("apple", "banana", "pear")
+str_view(x, pattern = "an")
+```
+
+```{r}
+x <- c("ap\\ple", "bana.na", "pe.ar")
+```
+
+```{r}
+x
+```
+
+```{r}
+# explicit .
+str_view(x, "a\\.")
+```
+
+```{r}
+# explicit \
+str_view(x, "\\\\")
+```
+
+
+
