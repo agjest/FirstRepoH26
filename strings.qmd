@@ -95,5 +95,31 @@ str_view(x, "a\\.")
 str_view(x, "\\\\")
 ```
 
+```{r}
+x <- c("apple pie", "apple tart", "apple cake")
+str_view(x, "\\s[^c]")
+```
+
+```{r}
+x <- c("apple pie", "apple tart", "apple cake", "apple ?ake")
+str_view(x, "\\s[^c]")
+```
+
+```{r}
+x <- c("apple pie", "apple tart", "apple cake", "apple ?ake")
+str_view(x, "\\s[^c\\?]")
+```
+
+```{r}
+z <- "32abab2111abab78"
+```
+
+
+```{r}
+tmp <- str_match_all(z, pattern = "(\\d+)([a,b]+\\d+)([:alpha:]+)(.*)")
+tmp
+```
+
+
 
 

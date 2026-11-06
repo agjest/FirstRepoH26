@@ -1,0 +1,100 @@
+---
+title: "Functions"
+format: html
+editor: visual
+---
+
+```{r}
+#| label: setup
+#| message: false
+library(tidyverse)
+
+options(paged.print = FALSE)
+```
+
+
+## Functions
+
+```{r}
+z <- c(runif(n = 9, -5, 5), 0)
+```
+
+```{r}
+decide_numvec <- function(x) {
+  stopifnot(is.numeric(x))
+  x_g <- x > 0
+  x_l <- x < 0
+  x_ans <- case_when(
+    x_g == TRUE~ paste(x, "is greater than zero"),
+    x_l == TRUE ~ paste(x, "is less than zero"),
+    !(x_g | x_l) == TRUE ~ paste(x, "is zero")
+  )
+  x_ans
+}
+```
+
+```{r}
+decide_numvec(z)
+```
+
+### 
+
+```{r}
+m <- mtcars
+```
+
+```{r}
+str(m)
+```
+
+```{r}
+q <- 2.252553
+qq <- as.integer(q)
+floor(q)
+ceiling(q)
+```
+
+```{r}
+x <- 3L
+y = 0.887575
+x + y
+```
+
+```{r}
+# set names by naming the element
+x <- c(a = 1, b = 2, c = 3, d = 4)
+x
+```
+
+```{r}
+names(x) <- NULL
+```
+
+```{r}
+x
+```
+
+```{r}
+names(m)
+```
+
+```{r}
+names(m) <- NULL
+```
+
+```{r}
+names(m)
+```
+
+```{r}
+m
+```
+
+```{r}
+class(m)
+```
+
+```{r}
+m[,3]
+```
+

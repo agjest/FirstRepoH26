@@ -1,0 +1,125 @@
+---
+title: "Iteration"
+format: html
+editor: source
+---
+
+```{r}
+#| label: setup
+#| message: false
+library(tidyverse)
+
+options(paged.print = FALSE)
+```
+
+```{r}
+set.seed(333)
+my_df <- tibble(
+  x = rnorm(10, mean = 100, sd = 10),
+  y = runif(10, min = 30, max = 130),
+  z = rlnorm(10, 2, 2)
+)
+my_df1 <- my_df[1:3, 1:3]
+```
+
+
+
+```{r}
+T <- function(df) {
+# allocate empty tibble for transposed df
+out <- matrix(
+  ncol = nrow(df), 
+  nrow = ncol(df)
+  )
+# i row, j column
+# column
+for (j in 1:ncol(df)) {
+# row
+  for (i in 1:nrow(df)) {
+    out[[j, i]] <-  df[[i, j]]
+  }
+}
+# have to set colnames on matrix to keep as_tibble happy
+colnames(out) <- paste("V", 1:nrow(df), sep = "_")
+as_tibble(out)
+}
+```
+
+```{r}
+my_df1
+```
+
+
+```{r}
+T(my_df1)
+```
+
+```{r}
+# Fast and dirty
+TT <- function(df) {
+  d = dim(df)
+  i = d[1]
+  j = d[2]
+  v = unlist(df)
+  m = matrix(v, byrow = TRUE, ncol = i)
+  m
+  }
+```
+
+```{r}
+TT(my_df1)
+```
+
+```{r}
+decide_number <- function(x) {
+#  stopifnot(is.numeric(x) & length(x) == 1)
+  if (x > 0) {
+    paste(x, "is greater than zero")
+  } else if (x < 0) {
+    paste(x, "is less than zero")
+  } else {
+    paste(x, "is zero")
+  }
+}
+```
+
+```{r}
+decide_number(-7)
+```
+
+```{r}
+try(decide_number(c(-7, 2)))
+```
+
+```{r}
+decide_number_vec <- function(x) {
+  vec <- vector(mode = "character", length = length(x))
+  for (i in seq_along(x)) {
+    vec[i] <- decide_number(x[i])
+  }
+  vec
+}
+```
+
+```{r}
+decide_number_vec(c(-7, 2))
+```
+
+
+```{r}
+decide_numvec <- function(x) {
+  stopifnot(is.numeric(x))
+  x_g <- x > 0
+  x_l <- x < 0
+  x_ans <- case_when(
+    x_g == TRUE~ paste(x, "is greater than zero"),
+    x_l == TRUE ~ paste(x, "is less than zero"),
+    !(x_g | x_l) == TRUE ~ paste(x, "is zero")
+  )
+  x_ans
+}
+```
+
+```{r}
+decide_numvec(c(-7, 2))
+```
