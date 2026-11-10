@@ -123,3 +123,136 @@ decide_numvec <- function(x) {
 ```{r}
 decide_numvec(c(-7, 2))
 ```
+
+```{r}
+# checking speed
+set.seed(444)
+test_vec <- sample(x = -10:10, size = 10000, replace = TRUE)
+# Unit: milliseconds
+# commented out to run document
+# fix error
+microbenchmark::microbenchmark(decide_numvec(test_vec), decide_number_vec(test_vec))
+
+```
+
+```{r}
+for (nm in names(my_df)) {
+  print(nm)
+}
+```
+
+```{r}
+for (i in seq_along(my_df)) {
+  print(names(my_df)[[i]])
+}
+```
+
+```{r}
+for (i in 1:length(my_df)) {
+  print(names(my_df)[[i]])
+}
+```
+
+## Unknown length of output
+
+```{r}
+# rnorm with different means
+uol_list  <- function(means) {
+  out <- vector("list", length = length(means))
+  for(i in seq_along(means)) {
+    n <- sample(50:100, 1)
+    out[[i]] <- rnorm(n, means[i])
+  }
+out
+}
+```
+
+```{r}
+uol_list(c(0.5, -2, 1.25))
+```
+
+```{r}
+uol_list(c(0.5, -2, 1.25)) |> unlist() |> str()
+```
+
+```{r}
+# rnorm with different means
+uol_list  <- function(means) {
+  out <- vector("list", length = length(means))
+  for(i in seq_along(means)) {
+    n <- sample(50:100, 1)
+    out[[i]] <- rnorm(n, means[i])
+  }
+# return vector
+unlist(out)
+}
+```
+
+```{r}
+uol_list(c(0.5, -2, 1.25)) |> str()
+```
+
+```{r}
+# do while abs(r) < 1.96, then print drawn values
+cond <- TRUE
+rl <- list()
+i = 0
+while(cond) {
+  r = rnorm(n = 1)
+  i = i + 1
+  rl = append(rl, r)
+  if(abs(r) > 1.96) {
+    cond = FALSE
+    rl = list_c(rl)
+    print(rl)
+  }
+}
+```
+
+
+```{r}
+df2 <- tibble(a = rnorm(5), b = rnorm(5), c = rnorm(5))
+length(df2)
+```
+
+```{r}
+map(.x = df2, .f = mean) |> unlist() |> sum()
+```
+
+```{r}
+map(.x = df2, .f = mean) |> list_c() |> sum()
+```
+
+```{r}
+map(.x = my_df, .f = mean) |> as.integer()
+```
+
+```{r}
+map(.x = my_df, .f = mean) |> list_c() |> round(digits = 0)
+```
+
+```{r}
+list_c(
+  map(
+    map(
+      .x = my_df, 
+      .f = mean), 
+    .f = round, 
+    # sent via ...
+    digits = 0
+    )
+  )
+```
+
+```{r}
+my_df |> 
+map(
+  .f = mean
+  ) |> 
+  map(
+    .f = round,
+    digits = 2
+  ) |> 
+  unlist()
+```
+
