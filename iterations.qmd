@@ -8,6 +8,7 @@ editor: source
 #| label: setup
 #| message: false
 library(tidyverse)
+library(flextable)
 
 options(paged.print = FALSE)
 ```
@@ -255,4 +256,113 @@ map(
   ) |> 
   unlist()
 ```
+
+
+```{r}
+my_df %>% 
+  map(median) |> 
+  bind_cols()
+```
+
+
+```{r}
+# unnamed vector
+my_df |> 
+  map(mean, trim = 0.1, na.rm = TRUE) |> 
+  list_c()
+```
+
+```{r}
+my_df <- my_df %>% 
+  mutate(
+    w = c(rep("A", 5), rep("B", 5))
+  )
+```
+
+```{r}
+my_df
+```
+
+```{r}
+my_df %>% 
+  split(.$w) %>% 
+  # my_df flows into x and ends at the right place in lm()
+  map(function(x) lm(y ~ x, data = x)) |> 
+  map(.f = coef)
+```
+
+```{r}
+# Shortcut anonymous function
+my_df %>% 
+  split(.$w) %>% 
+  # ~ is function(x) bit and . is x
+  map(~lm(y ~ x, data = .)) |> 
+  map(.f = as_flextable)
+```
+
+```{r}
+# R version. Note the parentheses in second and third line
+my_models <- my_df |> 
+  (\(x) split(x, f = x$w))() |> 
+  # note the different meanings of x
+  (\(s) lapply(X = s, FUN = lm, formula = 'y ~ x + z'))()
+
+
+my_models |> 
+  map(as_flextable)
+```
+
+
+```{r}
+tmp <- my_models %>% 
+  map(summary) %>% 
+  map(.f = pluck, "adj.r.squared") |> 
+  unlist()
+```
+
+```{r}
+#| eval: false
+list(nm1 = "a", nm2 = 10, nm3 = 100, nm4 = -4) |>
+  map(.f = log) |> 
+  bind_cols()
+```
+
+
+
+```{r}
+list(nm1 = "a", nm2 = 10, nm3 = 100, nm4 = -4) |>
+  map(possibly(.f = log, otherwise = NA_real_)) |> 
+  bind_cols()
+```
+
+```{r}
+list(nm1 = "a", nm2 = 10, nm3 = 100, nm4 = -4) |>
+  map(possibly(log, NA_real_)) |> 
+  bind_rows()
+```
+
+
+Merk forskjellen
+
+```{r}
+list("a", 10, 100, -4) |>
+  map(possibly(log, NA_real_)) |> 
+  bind_cols()
+```
+
+```{r}
+#| eval: false
+list("a", 10, 100, -4) |>
+  map(possibly(log, NA_real_)) |> 
+  bind_rows()
+```
+
+```{r}
+list("a", 10, 100, -4) |>
+  map(possibly(log, NA_real_)) |> 
+  set_names(nm = c("nm1", "nm2", "nm3", "nm4")) |> 
+  bind_rows()
+```
+
+
 
